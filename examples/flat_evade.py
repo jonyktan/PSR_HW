@@ -29,6 +29,7 @@ if __name__ == "__main__":
     env = env.FlatEvadeEnv(env_spec, agents)
     dt, env_info, measurement_groups = env.reset()
     record = []
+    dist_record = []
     print("Simulation progress:")
     for it in progressbar.progressbar(range(500)):
         actions = {}
@@ -37,6 +38,11 @@ if __name__ == "__main__":
             actions[agent.name] = agent.action(dt, measurement_groups[agent.name])
             #sensor data is grouped by agent
         dt, env_info, measurement_groups = env.step(actions)
+        dist = np.linalg.norm([measurement_groups['robot']['cartesian_sensor']['pos'], measurement_groups['human']['cartesian_sensor']['pos']])
         record.append((env_info,measurement_groups))
+        dist_record.append(dist)
+        # print(f"Robot pos is {measurement_groups['robot']['cartesian_sensor']['pos']}")
+        # print(f"Human pos is {measurement_groups['human']['cartesian_sensor']['pos']}")
 
     evaluator.evaluate(record)
+    print(f'Average distance between two agents is {np.average(dist_record)}')
