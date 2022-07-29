@@ -60,12 +60,12 @@ class EnergyFunctionController(SafeController):
         """
         n = np.shape(ce)[0]//2
 
-        raise NotImplementedError # TODO delete this line
+        # raise NotImplementedError # TODO delete this line
 
         # TODO compute the following terms
-        phi         = None
-        p_phi_p_ce  = None
-        p_phi_p_co  = None
+        phi         = -((ce[0]-co[0])^2+(ce[1]-co[1])^2) # Use -ve of the distance^2 between ego and obstacle
+        p_phi_p_ce  = -2 * ce + 2 * co
+        p_phi_p_co  = -2 * co + 2 * ce
         
         return phi, p_phi_p_ce, p_phi_p_co
     
