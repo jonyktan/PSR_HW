@@ -10,7 +10,7 @@ Given $ \mathbf{c_e} = [x_e, y_e, \dot{x_e}, \dot{y_e}] $, $ \mathbf{c_o} = [x_o
 
 Distance $d$ between ego and obstacle is $ d = \sqrt{(x_e-x_o)^2+(y_e-y_o)^2} \geq 0 $.
 
-Define initial safety index $\phi_0 = d_{min}^2 - d^2 \leq 0 $ , $d_{min} = 15.0$ given in `flat_evade_agent_1.yaml`. Choose power 2 just to avoid the square root in $d$.
+Define initial safety index $\phi_0 = d_{min}^2 - d^2 \leq 0 $. Choose power 2 just to avoid the square root in $d$.
 
 Then $ \dot{\phi_0} = -2d\dot{d} \\ = -2[\,(x_e-x_o)(\dot{x_e}-\dot{x_o})+(y_e-y_o)(\dot{y_e}-\dot{y_o})\,]\,  \\ = -2[x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} ] \ $, which does not contain $\mathbf{u}$. 
 
@@ -20,7 +20,7 @@ So the safety index for control can be $ \phi = c + \phi_0 + k\dot{\phi_0} $ whe
 
 $ \phi = c + d_{min}^2 - d^2 - 2kd\dot{d} $
 
-Partial derivatives of $\phi$ are not needed.
+Partial derivatives of $\phi$ w.r.t $ x_e $ and $ c_o $ do not seem to be needed.
 
 <!-- $ \frac{\partial \phi}{\partial \mathbf{c_e}} = -2\mathbf{c_e} + 2\mathbf{c_o} $ 
 
@@ -36,17 +36,26 @@ $ \text{s.t. }  \dot{\phi} < - \eta \text{ or }  \phi < 0 $ ($\eta$ is the safet
 
 For feasibility of control, $ \underset{x}{\max} \ \underset{\mathbf{u} \in \Omega }{\min} \ {\dot{\phi} + \eta(\phi)} \leq 0 $.
 
+### Check feasibility for forward invariance
 For forward invariance, i.e. when $ \phi = 0, \eta(\phi) =0 $.
 
-$\dot{\phi} + \eta(\phi) = \dot{\phi_0} + k\ddot{\phi_0} \\ = -2d\dot{d} -2k\dot{d}^2-2kd\ddot{d} $
+$\dot{\phi} + \eta(\phi) = \dot{\phi_0} + k\ddot{\phi_0} + 0 \\ = -2d\dot{d} -2k\dot{d}^2-2kd\ddot{d} $
 
-<!-- $\dot{\phi} + \eta(\phi) = -2d\dot{d} -2k\dot{d}^2 - 2kd\ddot{d}  \ $ -->
-<!-- $ \dot{\phi_0} + k \ddot{\phi_0} \\ = -\dot{d} - k\|{\mathbf{u}}\| $ -->
-
-$ \underset{\mathbf{u} \in \Omega }{\min} \ {\dot{\phi} + \eta(\phi)} \leq 0  \Rightarrow -2d\dot{d} -2k\dot{d}^2-2kd \ \underset{\mathbf{u}}{\max}\ \ddot{d} \leq 0, \forall \mathbf{c}, \text{s.t. }\phi(\mathbf{c})=0 $.
+$ \underset{\mathbf{u} \in \Omega }{\min} \ {\dot{\phi} + \eta(\phi)} \leq 0  \Rightarrow -2d\dot{d} -2k\dot{d}^2-2kd \ \underset{\mathbf{u}}{\max}\ \ddot{d} \leq 0, \forall \mathbf{c}_e, \text{s.t. }\phi(\mathbf{c}_e)=0 $.
 
 Case 1: $ d^2 \leq c+ d_{min}^2  \Rightarrow d\dot{d} \geq 0 $ (from equation of $\phi = 0$).
 
 Hence $ -2d\dot{d} -2k\dot{d}^2-2kd \ \underset{\mathbf{u}}{\max}\ \ddot{d} \leq 0 $.
 
-Case 2: $ d > c+ d_{min} $, then $\dot{d} = \sqrt{(\dot{x_e}-\dot{x_o})^2+(\dot{y_e}-\dot{y_o})^2} > 0 $.
+Case 2: $ d^2 > c+ d_{min}^2 $, then $d\dot{d} = x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} > 0 $.
+
+Hence $ -2d\dot{d} -2k\dot{d}^2-2kd \ \underset{\mathbf{u}}{\max}\ \ddot{d} = -2(\,\sqrt{c+d_{min}^2 - 2kd\dot{d}})\, $
+
+$ c = 1000, k = 5.0, d_{min} = 15.0, \eta = 1$ given in `flat_evade_agent_1.yaml`
+
+
+## Goal
+
+Find equation of the form: 
+
+$ \underset{\mathbf{u}}{\min} \| \mathbf{u}-\mathbf{u}_{ref} \| \\ \text{s.t.} G\mathbf{u} \leq h $
