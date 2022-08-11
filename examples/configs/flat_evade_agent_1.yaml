@@ -33,8 +33,8 @@ controller:
             u_max: [200, 200]
         safe_controller: 
           # TODO change to SafeSetController
-          type: UnsafeController
-          # type: SafeSetController
+        #   type: UnsafeController
+          type: SafeSetController
           spec:
               d_min: 15.0
               k_v: 5.0
