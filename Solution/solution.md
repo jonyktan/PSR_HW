@@ -2,7 +2,7 @@
 
 In "flat_evade.py", calculate distance between agents after every time step using np.linalg.norm(). Log distance over 500 time steps and calculate average after 500 time steps.
 
-Video was recorded and average distance was calculated to be 96.98.
+[Video was recorded](Solution\videos\Q1-1.mkv) and average distance was calculated to be 96.98.
 
 # 2.1 Energy function controller (optional)
 
@@ -54,7 +54,7 @@ Hence $ -2d\dot{d} - k\underset{\mathbf{u}}{\max}\ \ddot{d}
 \\= -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\underset{\mathbf{u}}{\max}\ [\,\frac{\dot{x}_{rel}\ddot{x}_{rel}+\dot{y}_{rel}\ddot{y}_{rel}}{\sqrt{x_{rel}^2+y_{rel}^2}} -\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} ]\, 
 \\ = -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, +k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} - k\underset{\ddot{x}_e,\ddot{y}_e}{\max}\ \frac{\dot{x}_{rel}\ddot{x}_e+\dot{y}_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} $ 
 
- if we take acceleration of the human to be $0$. <<What does this show?>>
+ if we take acceleration of the human to be $0$. <i><<What does this show?>></i>
 
 $ c = 1000, k = 5.0, d_{min} = 15.0, \eta = 1$ given in `flat_evade_agent_1.yaml`
 
@@ -65,11 +65,11 @@ From CVXOPT documentation, find equation of the form:
 $ \underset{\mathbf{u}}{\min} \frac{1}{2} \mathbf{u}^\mathsf{T}P\mathbf{u} + q^\mathsf{T}\mathbf{u} \\ \text{s.t.} G\mathbf{u} \leq h $
 
 \
-$\min \| \mathbf{u} - \mathbf{u_{ref}} \|
-\\ \Rightarrow \min [\,(\,\ddot{x}_e-\ddot{x}_{ref})\,^2 + (\,\ddot{y}_e-\ddot{y}_{ref})\,^2]\,
-\\ = \min [\,\ddot{x}_e^2 - 2\ddot{x}_e\ddot{x}_{ref} + \ddot{x}_{ref}^2 + \ddot{y}_e^2 - 2\ddot{y}_e\ddot{y}_{ref} + \ddot{y}_{ref}^2]\, 
-\\ = \min [\,\begin{bmatrix} \ddot{x}_e & \ddot{y}_e \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} \ddot{x}_e \\ \ddot{y}_e \end{bmatrix} + \begin{bmatrix} -2\ddot{x}_{ref} & -2\ddot{y}_{ref} \end{bmatrix} \begin{bmatrix} \ddot{x}_e \\ \ddot{y}_e \end{bmatrix} + \ddot{x}_{ref}^2 + \ddot{y}_{ref}^2]\, 
-\\ \Rightarrow \min [\,\frac{1}{2} \mathbf{u}^\mathsf{T} \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \mathbf{u} + \begin{bmatrix} -2\ddot{x}_{ref} \\ -2\ddot{y}_{ref} \end{bmatrix} ^\mathsf{T} \mathbf{u} ]\, $
+$ \underset{\mathbf{u}}{\min} \| \mathbf{u} - \mathbf{u_{ref}} \|
+\\ \Rightarrow \underset{\ddot{x}_e, \ddot{y}_e}{\min} [\,(\,\ddot{x}_e-\ddot{x}_{ref})\,^2 + (\,\ddot{y}_e-\ddot{y}_{ref})\,^2]\,
+\\ = \underset{\ddot{x}_e, \ddot{y}_e}{\min} [\,\ddot{x}_e^2 - 2\ddot{x}_e\ddot{x}_{ref} + \ddot{x}_{ref}^2 + \ddot{y}_e^2 - 2\ddot{y}_e\ddot{y}_{ref} + \ddot{y}_{ref}^2]\, 
+\\ = \underset{\ddot{x}_e, \ddot{y}_e}{\min} [\,\begin{bmatrix} \ddot{x}_e & \ddot{y}_e \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} \ddot{x}_e \\ \ddot{y}_e \end{bmatrix} + \begin{bmatrix} -2\ddot{x}_{ref} & -2\ddot{y}_{ref} \end{bmatrix} \begin{bmatrix} \ddot{x}_e \\ \ddot{y}_e \end{bmatrix} + \ddot{x}_{ref}^2 + \ddot{y}_{ref}^2]\, 
+\\ \Rightarrow \underset{\mathbf{u}}{\min} [\,\frac{1}{2} \mathbf{u}^\mathsf{T} \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \mathbf{u} + \begin{bmatrix} -2\ddot{x}_{ref} \\ -2\ddot{y}_{ref} \end{bmatrix} ^\mathsf{T} \mathbf{u} ]\, $
 
 
 \
@@ -85,5 +85,21 @@ So QP standard form is:
 $ \min [\,\frac{1}{2} \mathbf{u}^\mathsf{T} \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \mathbf{u} + \begin{bmatrix} -2\ddot{x}_{ref} \\ -2\ddot{y}_{ref} \end{bmatrix} ^\mathsf{T} \mathbf{u} ]\,
 \\ \text{s.t.} \begin{bmatrix} -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \dot{x}_{rel} & -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \dot{y}_{rel} \\ 1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1 \end{bmatrix} 
 \mathbf{u}  < 
-\begin{bmatrix}- \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} \\ 200 \\ 200 \\ 200 \\ 200 \end{bmatrix}
+\begin{bmatrix}- \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} \\ u_{max} \\ u_{max} \\ u_{max} \\ u_{max} \end{bmatrix}
 $
+
+<br>
+
+# 2.3 Navigation with Safe Control
+
+## Observations
+1. cvxopt solver could not solve for $\mathbf{u}$ when the constraints for $\mathbf{u}_i \leq u_{max}$ were included.
+    ```
+    File ".../lib/python3.8/site-packages/cvxopt/misc.py", line 450, in update_scaling
+        s[:m] = base.sqrt( s[:m] )
+    ValueError: domain error
+    ````
+1. By removing $\mathbf{u}_i \leq u_{max}$ constraint, cvxopt solver could find $\mathbf{u}$ but:
+    - the robot seemed to always move along the same axis ($ u_x = u_y $) and could not move perpendicularly out of the way of the human, resulting in a lot of collisions. ([seen in video](Solution\videos\Q2-3.mp4))
+    - robot velocity seemed high, resulting in high rate of collisions at high speed <i><<are there mistakes with my sign conventions in the math?>></i>
+    - average distance between robot and human is lower, but achieved goal is also lower...
