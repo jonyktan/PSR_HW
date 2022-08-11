@@ -136,22 +136,41 @@ class SafeSetController(EnergyFunctionController):
 
         # TODO compute the following terms
         phi, _, _ = self.phi_and_derivatives(dt, ce, co)
+        # print(f'phi = {phi}')
+        if phi < 0:
+            u = u_ref
 
-        # Compute the following terms for QP
-        x_rel   = ce[0][0] - co[0][0]
-        y_rel   = ce[1][0] - co[1][0]
-        dot_x_rel   = ce[2][0] - co[2][0]
-        dot_y_rel   = ce[3][0] - co[3][0]
+        else:
+            # Compute the following terms for QP
+            x_rel   = ce[0][0] - co[0][0]
+            y_rel   = ce[1][0] - co[1][0]
+            dot_x_rel   = ce[2][0] - co[2][0]
+            dot_y_rel   = ce[3][0] - co[3][0]
+            u_max = self._spec['u_max']
 
-        # CVXOPT QP solver in the form of min 1/2 * u^T * P * u + q^T * u, s.t. G * u <= h
-        P = matrix(np.array([[2,0],[0,2]]), tc='d')
-        q = matrix(np.array([-2*u_ref[0], -2*u_ref[1]]), tc='d')
-        # G = matrix(np.array([[-(self.k_v*dot_x_rel)/(np.sqrt(x_rel**2 + y_rel**2)), -(self.k_v*dot_y_rel)/(np.sqrt(x_rel**2 + y_rel**2))], [1,0], [0,1], [-1,0], [0,-1]]), tc='d')
-        # h = matrix(np.array([-self.eta + 2*(x_rel*dot_x_rel + y_rel*dot_y_rel) - self.k_v*(x_rel*dot_x_rel + y_rel*dot_y_rel)**2/(x_rel**2 + y_rel**2)**(3/2), 200, 200, 200, 200]), tc='d')
-        G = matrix(np.array([[-(self.k_v*dot_x_rel)/(np.sqrt(x_rel**2 + y_rel**2)), -(self.k_v*dot_y_rel)/(np.sqrt(x_rel**2 + y_rel**2))]]), tc='d')
-        h = matrix(np.array([-self.eta + 2*(x_rel*dot_x_rel + y_rel*dot_y_rel) - self.k_v*(x_rel*dot_x_rel + y_rel*dot_y_rel)**2/(x_rel**2 + y_rel**2)**(3/2)]), tc='d')
-        sol = solvers.qp(P,q,G,h)
-        u = sol['x']
+            # CVXOPT QP solver in the form of min 1/2 * u^T * P * u + q^T * u, s.t. G * u <= h
+            P = matrix([[2.0,0.0],[0.0,2.0]])
+            q_1 = -2*u_ref[0][0]
+            q_2 = -2*u_ref[1][0]
+            # print(f'q_1 = {q_1}, type = {type(q_1)}')
+            q = matrix([q_1, q_2])
+            G_11 = -(self.k_v*dot_x_rel)/(np.sqrt(x_rel**2 + y_rel**2))
+            G_12 = -(self.k_v*dot_y_rel)/(np.sqrt(x_rel**2 + y_rel**2))
+            h_1 = -self.eta + 2*(x_rel*dot_x_rel + y_rel*dot_y_rel) - self.k_v*((x_rel*dot_x_rel + y_rel*dot_y_rel)**2)/((x_rel**2 + y_rel**2)**(3/2))
+            # Solver does not seem to be able to solve if constraints on u within u_max is provided...
+            # G = matrix([[G_11,1.0,0.0,-1.0,0.0],[G_12,0.0,1.0,0.0,-1.0]])
+            # h = matrix([h_1,u_max[0],u_max[1],u_max[0],u_max[1]])
+            # Solve without constraints on u within u_max
+            G = matrix([[G_11],[G_12]])
+            h = matrix([h_1])
+            # initvals = {'x':matrix(u_ref)}
+            sol = solvers.coneqp(P,q,G,h)
+            u = sol['x']
 
+            # Clip u if u from solver is greater than u_max
+            u[0] = np.sign(u[0]) * min(abs(u[0]), u_max[0])
+            u[1] = np.sign(u[1]) * min(abs(u[1]), u_max[1])
+
+        # print(u_ref, u)
         return phi, u
 
