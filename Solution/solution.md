@@ -28,13 +28,14 @@ $ \frac{\partial \phi}{\partial \mathbf{c_e}} = -2\mathbf{c_o} + 2\mathbf{c_e} $
 
 Continuing from 2.1, find ${\mathbf{u}}$ by solving the following optimization:
 
-$\min \| \mathbf{u} - \mathbf{u_{ref}} \|$,
-
-$ \text{s.t. }  \dot{\phi} < - \eta \text{ or }  \phi < 0 $ ($\eta$ is the safety margin used in $\phi$)
-
-For feasibility of control, $ \underset{x}{\max} \ \underset{\mathbf{u} \in \Omega }{\min} \ {\dot{\phi} + \eta(\phi)} \leq 0 $.
+$\min \| \mathbf{u} - \mathbf{u_{ref}} \|,
+\\ \text{s.t. }  \dot{\phi} < - \eta \text{ or }  \phi < 0 
+\ (\eta \text{ is the safety margin used in } \phi), 
+\\ -\mathbf{u}_{max} \leq \mathbf{u} \leq \mathbf{u}_{max} $
 
 ## Check feasibility for forward invariance
+For feasibility of control, $ \underset{x}{\max} \ \underset{\mathbf{u} \in \Omega }{\min} \ {\dot{\phi} + \eta(\phi)} \leq 0 $.
+
 For forward invariance, i.e. when $ \phi = 0, \eta(\phi) =0 $.
 
 $\dot{\phi} + \eta(\phi) = -2d\dot{d} - k\ddot{d} + 0 $
@@ -65,7 +66,7 @@ $ \underset{\mathbf{u}}{\min} \frac{1}{2} \mathbf{u}^\mathsf{T}P\mathbf{u} + q^\
 
 \
 $\min \| \mathbf{u} - \mathbf{u_{ref}} \|
-\\ = \min [\,(\,\ddot{x}_e-\ddot{x}_{ref})\,^2 + (\,\ddot{y}_e-\ddot{y}_{ref})\,^2]\,
+\\ \Rightarrow \min [\,(\,\ddot{x}_e-\ddot{x}_{ref})\,^2 + (\,\ddot{y}_e-\ddot{y}_{ref})\,^2]\,
 \\ = \min [\,\ddot{x}_e^2 - 2\ddot{x}_e\ddot{x}_{ref} + \ddot{x}_{ref}^2 + \ddot{y}_e^2 - 2\ddot{y}_e\ddot{y}_{ref} + \ddot{y}_{ref}^2]\, 
 \\ = \min [\,\begin{bmatrix} \ddot{x}_e & \ddot{y}_e \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} \ddot{x}_e \\ \ddot{y}_e \end{bmatrix} + \begin{bmatrix} -2\ddot{x}_{ref} & -2\ddot{y}_{ref} \end{bmatrix} \begin{bmatrix} \ddot{x}_e \\ \ddot{y}_e \end{bmatrix} + \ddot{x}_{ref}^2 + \ddot{y}_{ref}^2]\, 
 \\ \Rightarrow \min [\,\frac{1}{2} \mathbf{u}^\mathsf{T} \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \mathbf{u} + \begin{bmatrix} -2\ddot{x}_{ref} \\ -2\ddot{y}_{ref} \end{bmatrix} ^\mathsf{T} \mathbf{u} ]\, $
@@ -77,3 +78,12 @@ $ \dot{\phi} < - \eta
 \\ \Rightarrow -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k[\,\frac{\dot{x}_{rel}\ddot{x}_e+\dot{y}_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} -\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} ]\, < - \eta
 \\ \Rightarrow - k\frac{\dot{x}_{rel}\ddot{x}_e+\dot{y}_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} < - \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} 
 \\ \Rightarrow -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \begin{bmatrix} \dot{x}_{rel} & \dot{y}_{rel} \end{bmatrix} \mathbf{u}  < - \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} $ 
+
+\
+So QP standard form is:
+
+$ \min [\,\frac{1}{2} \mathbf{u}^\mathsf{T} \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \mathbf{u} + \begin{bmatrix} -2\ddot{x}_{ref} \\ -2\ddot{y}_{ref} \end{bmatrix} ^\mathsf{T} \mathbf{u} ]\,
+\\ \text{s.t.} \begin{bmatrix} -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \dot{x}_{rel} & -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \dot{y}_{rel} \\ 1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1 \end{bmatrix} 
+\mathbf{u}  < 
+\begin{bmatrix}- \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} \\ 200 \\ 200 \\ 200 \\ 200 \end{bmatrix}
+$
