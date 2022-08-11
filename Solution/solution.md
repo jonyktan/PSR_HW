@@ -1,6 +1,8 @@
+Note: solution.md best previewed in VS code (ctrl+shift+v)
+
 # 1.1 Navigation without Safe Control
 
-In "flat_evade.py", calculate distance between agents after every time step using np.linalg.norm(). Log distance over 500 time steps and calculate average after 500 time steps.
+In "flat_evade.py", calculate distance between agents after every time step using `np.linalg.norm`(). Log distance over 500 time steps and calculate average after 500 time steps.
 
 [Video was recorded](Solution\videos\Q1-1.mkv) and average distance was calculated to be 96.98.
 
