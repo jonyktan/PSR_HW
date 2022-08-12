@@ -154,9 +154,9 @@ class SafeSetController(EnergyFunctionController):
             q_2 = -2*u_ref[1][0]
             # print(f'q_1 = {q_1}, type = {type(q_1)}')
             q = matrix([q_1, q_2])
-            G_11 = -(self.k_v*dot_x_rel)/(np.sqrt(x_rel**2 + y_rel**2))
-            G_12 = -(self.k_v*dot_y_rel)/(np.sqrt(x_rel**2 + y_rel**2))
-            h_1 = -self.eta + 2*(x_rel*dot_x_rel + y_rel*dot_y_rel) - self.k_v*((x_rel*dot_x_rel + y_rel*dot_y_rel)**2)/((x_rel**2 + y_rel**2)**(3/2))
+            G_11 = -(self.k_v*x_rel)/(np.sqrt(x_rel**2 + y_rel**2))
+            G_12 = -(self.k_v*y_rel)/(np.sqrt(x_rel**2 + y_rel**2))
+            h_1 = -self.eta + 2*(x_rel*dot_x_rel + y_rel*dot_y_rel) + self.k_v*(dot_x_rel**2+dot_y_rel**2)/(np.sqrt(x_rel**2+y_rel**2)) - self.k_v*((x_rel*dot_x_rel + y_rel*dot_y_rel)**2)/((x_rel**2 + y_rel**2)**(3/2))
             # Solver does not seem to be able to solve if constraints on u within u_max is provided...
             # G = matrix([[G_11,1.0,0.0,-1.0,0.0],[G_12,0.0,1.0,0.0,-1.0]])
             # h = matrix([h_1,u_max[0],u_max[1],u_max[0],u_max[1]])
@@ -164,7 +164,7 @@ class SafeSetController(EnergyFunctionController):
             G = matrix([[G_11],[G_12]])
             h = matrix([h_1])
             # initvals = {'x':matrix(u_ref)}
-            sol = solvers.coneqp(P,q,G,h)
+            sol = solvers.qp(P,q,G,h)
             u = sol['x']
 
             # Clip u if u from solver is greater than u_max
