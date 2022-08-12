@@ -38,8 +38,8 @@ controller:
           spec:
               d_min: 15.0
               k_v: 5.0
-              eta: 1
-              c: 1000
+              eta: 10
+              c: 100
               lambd: 1
               u_max: [200, 200]
 estimator:
