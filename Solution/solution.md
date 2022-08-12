@@ -53,8 +53,8 @@ Case 2: $ d^2 > c+ d_{min}^2 $, then
 $\dot{d} = \frac{(x_e-x_o)(\dot{x_e}-\dot{x_o})+(y_e-y_o)(\dot{y_e}-\dot{y_o})\,}{\sqrt{(x_e-x_o)^2+(y_e-y_o)^2}}\,  \\ = \frac{x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel}}{\sqrt{x_{rel}^2+y_{rel}^2}} < 0 $.
 
 Hence $ -2d\dot{d} - k\underset{\mathbf{u}}{\max}\ \ddot{d} 
-\\= -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\underset{\mathbf{u}}{\max}\ [\,\frac{\dot{x}_{rel}\ddot{x}_{rel}+\dot{y}_{rel}\ddot{y}_{rel}}{\sqrt{x_{rel}^2+y_{rel}^2}} -\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} ]\, 
-\\ = -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, +k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} - k\underset{\ddot{x}_e,\ddot{y}_e}{\max}\ \frac{\dot{x}_{rel}\ddot{x}_e+\dot{y}_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} $ 
+\\= -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\underset{\mathbf{u}}{\max}\ [\,\frac{\dot{x}_{rel}^2+x_{rel}\ddot{x}_{rel}+\dot{y}_{rel}^2+y_{rel}\ddot{y}_{rel}}{\sqrt{x_{rel}^2+y_{rel}^2}} -\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} ]\, 
+\\ = -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, -k \frac{\dot{x}_{rel}^2+\dot{y}_{rel}^2}{\sqrt{x_{rel}^2+y_{rel}^2}} +k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} - k\underset{\ddot{x}_e,\ddot{y}_e}{\max}\ \frac{x_{rel}\ddot{x}_e+y_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} $ 
 
  if we take acceleration of the human to be $0$. <i><<What does this show?>></i>
 
@@ -77,17 +77,17 @@ $ \underset{\mathbf{u}}{\min} \| \mathbf{u} - \mathbf{u_{ref}} \|
 \
 $ \dot{\phi} < - \eta
 \\ \Rightarrow -2d\dot{d} - k\ddot{d} < - \eta
-\\ \Rightarrow -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k[\,\frac{\dot{x}_{rel}\ddot{x}_e+\dot{y}_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} -\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} ]\, < - \eta
-\\ \Rightarrow - k\frac{\dot{x}_{rel}\ddot{x}_e+\dot{y}_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} < - \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} 
-\\ \Rightarrow -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \begin{bmatrix} \dot{x}_{rel} & \dot{y}_{rel} \end{bmatrix} \mathbf{u}  < - \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} $ 
+\\ \Rightarrow -2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, -k \frac{\dot{x}_{rel}^2+\dot{y}_{rel}^2}{\sqrt{x_{rel}^2+y_{rel}^2}} +k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} - k\frac{x_{rel}\ddot{x}_e+y_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} < - \eta
+\\ \Rightarrow - k\frac{x_{rel}\ddot{x}_e+y_{rel}\ddot{y}_e}{\sqrt{x_{rel}^2+y_{rel}^2}} < - \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, +k \frac{\dot{x}_{rel}^2+\dot{y}_{rel}^2}{\sqrt{x_{rel}^2+y_{rel}^2}} - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} 
+\\ \Rightarrow -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \begin{bmatrix} x_{rel} & y_{rel} \end{bmatrix} \mathbf{u}  < - \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, +k \frac{\dot{x}_{rel}^2+\dot{y}_{rel}^2}{\sqrt{x_{rel}^2+y_{rel}^2}} - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} $ 
 
 \
 So QP standard form is:
 
 $ \min [\,\frac{1}{2} \mathbf{u}^\mathsf{T} \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \mathbf{u} + \begin{bmatrix} -2\ddot{x}_{ref} \\ -2\ddot{y}_{ref} \end{bmatrix} ^\mathsf{T} \mathbf{u} ]\,
-\\ \text{s.t.} \begin{bmatrix} -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \dot{x}_{rel} & -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} \dot{y}_{rel} \\ 1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1 \end{bmatrix} 
+\\ \text{s.t.} \begin{bmatrix} -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} x_{rel} & -\frac{k}{\sqrt{x_{rel}^2+y_{rel}^2}} y_{rel} \\ 1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1 \end{bmatrix} 
 \mathbf{u}  < 
-\begin{bmatrix}- \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} \\ u_{max} \\ u_{max} \\ u_{max} \\ u_{max} \end{bmatrix}
+\begin{bmatrix}- \eta + 2(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel} )\, +k \frac{\dot{x}_{rel}^2+\dot{y}_{rel}^2}{\sqrt{x_{rel}^2+y_{rel}^2}} - k\frac{(\,x_{rel}\dot{x}_{rel}+y_{rel}\dot{y}_{rel})\,^2}{(\,x_{rel}^2+y_{rel}^2)\,^{\frac{3}{2}}} \\ u_{max} \\ u_{max} \\ u_{max} \\ u_{max} \end{bmatrix}
 $
 
 <br>
