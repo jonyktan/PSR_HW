@@ -101,7 +101,8 @@ $
         s[:m] = base.sqrt( s[:m] )
     ValueError: domain error
     ````
-1. By removing $\mathbf{u}_i \leq u_{max}$ constraint, cvxopt solver could find $\mathbf{u}$ but:
-    - the robot seemed to always move along the same axis ($ u_x = u_y $) and could not move perpendicularly out of the way of the human, resulting in a lot of collisions. ([seen in video](Solution\videos\Q2-3.mp4))
-    - robot velocity seemed high, resulting in high rate of collisions at high speed <i><<are there mistakes with my sign conventions in the math?>></i>
-    - average distance between robot and human is lower, but achieved goal is also lower...
+1. By removing $\mathbf{u}_i \leq u_{max}$ constraint, cvxopt solver could find $\mathbf{u}$:
+    - the robot avoids the human (distance at which avoidance behaviour is triggered, is affected by parameter $ c $, hence reduce $c$ value so robot has more opportunity to approach the goal) ([seen in video](Solution\videos\Q2-3-2.mp4))
+    - robot safety score is always 0 (no collisions)
+    - to get higher score, increase $ k $
+    - increase $ \eta $ to increase responsiveness of robot to human.
